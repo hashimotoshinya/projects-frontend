@@ -4,8 +4,6 @@ import api from "../axios";
 const ensureCsrfToken = async () => {
   try {
     await api.get("/sanctum/csrf-cookie");
-    // Cookie が設定されるまで少し待つ
-    await new Promise((resolve) => setTimeout(resolve, 100));
   } catch (error) {
     console.warn("Failed to get CSRF token", error);
   }
