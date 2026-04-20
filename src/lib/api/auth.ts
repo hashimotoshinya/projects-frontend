@@ -1,12 +1,14 @@
 import api from "../axios";
-import Cookies from "js-cookie";
 
 // CSRF Cookie を明示的に取得
 const ensureCsrfToken = async () => {
   try {
-    await api.get("/sanctum/csrf-cookie");
+    console.log("🔄 Getting CSRF token...");
+    const response = await api.get("/sanctum/csrf-cookie");
+    console.log("✅ CSRF token response:", response);
+    console.log("🍪 Current cookies:", document.cookie);
   } catch (error) {
-    console.warn("Failed to get CSRF token", error);
+    console.warn("❌ Failed to get CSRF token", error);
   }
 };
 
@@ -31,23 +33,16 @@ export const login = async (email: string, password: string) => {
   // CSRF取得
   await ensureCsrfToken();
 
-  // 🔥 Cookieからトークン取り出し
-  const token = Cookies.get("XSRF-TOKEN");
+  console.log("🚀 Attempting login with:", { email, password });
+  console.log("🍪 Cookies before login:", document.cookie);
 
-  // 🔥 ヘッダーに手動セット
-  const res = await api.post(
-    "/api/login",
-    {
-      email,
-      password,
-    },
-    {
-      headers: {
-        "X-XSRF-TOKEN": token,
-      },
-    },
-  );
+  // Axiosの自動CSRF処理に任せる
+  const res = await api.post("/api/login", {
+    email,
+    password,
+  });
 
+  console.log("✅ Login response:", res);
   return res.data;
 };
 
