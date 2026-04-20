@@ -6,6 +6,7 @@ const api = axios.create({
 });
 
 // 👇 これを追加（重要）
+api.defaults.withCredentials = true;
 api.defaults.xsrfCookieName = "XSRF-TOKEN";
 api.defaults.xsrfHeaderName = "X-XSRF-TOKEN";
 
