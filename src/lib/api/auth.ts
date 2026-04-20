@@ -1,4 +1,5 @@
 import api from "../axios";
+import Cookies from "js-cookie";
 
 // CSRF Cookie を明示的に取得
 const ensureCsrfToken = async () => {
@@ -27,13 +28,25 @@ export const register = async (
 };
 
 export const login = async (email: string, password: string) => {
-  // POST 前に CSRF トークンを確保
+  // CSRF取得
   await ensureCsrfToken();
 
-  const res = await api.post("/api/login", {
-    email,
-    password,
-  });
+  // 🔥 Cookieからトークン取り出し
+  const token = Cookies.get("XSRF-TOKEN");
+
+  // 🔥 ヘッダーに手動セット
+  const res = await api.post(
+    "/api/login",
+    {
+      email,
+      password,
+    },
+    {
+      headers: {
+        "X-XSRF-TOKEN": token,
+      },
+    },
+  );
 
   return res.data;
 };
