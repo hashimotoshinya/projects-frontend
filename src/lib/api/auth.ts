@@ -6,6 +6,13 @@ const ensureCsrfToken = async () => {
     console.log("🔄 Getting CSRF token...");
     const response = await api.get("/sanctum/csrf-cookie");
     console.log("✅ CSRF token response:", response);
+
+    const csrfToken = response.data?.csrf_token;
+    if (csrfToken) {
+      api.defaults.headers.common["X-XSRF-TOKEN"] = csrfToken;
+      console.log("✅ Set X-XSRF-TOKEN header from response token");
+    }
+
     console.log("🍪 Current cookies:", document.cookie);
   } catch (error) {
     console.warn("❌ Failed to get CSRF token", error);
