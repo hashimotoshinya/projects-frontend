@@ -13,6 +13,9 @@ export type Store = {
 
 export const getStores = async (): Promise<Store[]> => {
   const res = await api.get("/api/stores");
+
+  console.log(res.data); // ←追加
+
   return res.data;
 };
 
