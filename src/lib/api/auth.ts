@@ -24,37 +24,31 @@ export const register = async (
   email: string,
   password: string,
 ) => {
-  // POST 前に CSRF トークンを確保
-  await ensureCsrfToken();
-
   const res = await api.post("/api/register", {
     name,
     email,
     password,
   });
 
+  localStorage.setItem("token", res.data.token);
+
   return res.data;
 };
 
 export const login = async (email: string, password: string) => {
-  // CSRF取得
-  await ensureCsrfToken();
-
-  console.log("🚀 Attempting login with:", { email, password });
-  console.log("🍪 Cookies before login:", document.cookie);
-
-  // Axiosの自動CSRF処理に任せる
   const res = await api.post("/api/login", {
     email,
     password,
   });
 
-  console.log("✅ Login response:", res);
+  // 🔥 トークン保存
+  localStorage.setItem("token", res.data.token);
+
   return res.data;
 };
 
 export const logout = async () => {
-  const res = await api.post("/api/logout");
+  await api.post("/api/logout");
 
-  return res.data;
+  localStorage.removeItem("token");
 };
