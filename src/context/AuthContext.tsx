@@ -31,8 +31,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(data);
     } catch {
       setUser(null);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -50,8 +48,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       await apiLogout();
     } finally {
-      // ログアウト API が失敗してもローカル状態をクリア
-      // バックエンド側でセッションは無効化される
+      // 🔥 トークン削除が最重要
+      localStorage.removeItem("token");
+
       setUser(null);
     }
   };
