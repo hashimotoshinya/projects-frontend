@@ -67,13 +67,21 @@ export default function StoresPage() {
 
   useEffect(() => {
     const loadStores = async () => {
-      const data = await getStores();
-      setStores(data);
+      try {
+        console.log("① stores取得開始");
+        const data = await getStores();
+        console.log("② stores取得成功", data);
+        setStores(data);
 
-      const future = await getFuturePlans();
-      setFuturePlans(future);
-
-      setLoading(false);
+        console.log("③ futurePlans取得開始");
+        const future = await getFuturePlans();
+        console.log("④ futurePlans取得成功", future);
+        setFuturePlans(future);
+      } catch (error) {
+        console.error("🔥 エラー発生", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     loadStores();
