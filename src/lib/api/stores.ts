@@ -16,12 +16,12 @@ export const getStores = async (): Promise<Store[]> => {
 
   console.log(res.data); // ←追加
 
-  return res.data.data;
+  return res.data;
 };
 
 export const getStore = async (id: number): Promise<Store> => {
   const res = await api.get(`/api/stores/${id}`);
-  return res.data.data;
+  return res.data;
 };
 
 export const createStore = async (data: {
