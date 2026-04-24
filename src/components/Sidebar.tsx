@@ -12,9 +12,7 @@ export default function Sidebar() {
     { name: "店舗一覧", path: "/stores" },
     { name: "店舗登録", path: "/stores/create" },
     { name: "営業カレンダー", path: "/calendar" },
-    { name: "地図", path: "/map" },
     { name: "本日の予定", path: "/calendar/today" },
-    { name: "ルート管理", path: "/routes" },
   ];
 
   return (
